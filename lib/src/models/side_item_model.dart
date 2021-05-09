@@ -16,8 +16,6 @@ class SideItemModel extends Equatable {
 
   double visibilityPercentage = 0.0;
   bool mostVisible = false;
-  GlobalKey keyFlex = GlobalKey();
-  bool animationDone = false;
 
   SideItemModel({
     required this.page,
@@ -42,6 +40,5 @@ class SideItemModel extends Equatable {
     onMostVisible,
     lostFocus,
     focusBackgroundColor,
-    keyFlex,
   ];
 }

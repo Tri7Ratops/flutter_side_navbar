@@ -14,9 +14,6 @@ class DefaultSideItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      item.animationDone = false;
-    });
 
     return GestureDetector(
       onTap: onTap,

@@ -21,3 +21,7 @@
 // IN THE SOFTWARE.
 
 library flutter_side_navbar;
+
+export 'src/models/models.dart';
+export 'src/widgets/widgets.dart';
+export 'src/side_navbar.dart';

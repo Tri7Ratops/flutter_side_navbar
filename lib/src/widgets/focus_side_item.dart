@@ -21,20 +21,10 @@ class FocusSideItem extends StatefulWidget {
 class _FocusSideItemState extends State<FocusSideItem> {
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
-      if (!widget.item.animationDone) {
-        widget.item.animationDone = true;
-        setState(() {});
-      }
-    });
-
     return GestureDetector(
       onTap: widget.onTap,
       child: Center(
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 800),
-          height: widget.item.animationDone ? 5000 : 100,
-          curve: Curves.easeIn,
+        child: Container(
           padding: const EdgeInsets.all(10),
           decoration: widget.decoration.copyWith(color: widget.item.focusBackgroundColor),
           child: Column(

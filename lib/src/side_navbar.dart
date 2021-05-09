@@ -6,7 +6,7 @@ import 'package:flutter_side_navbar/src/widgets/widgets.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VerticalNavigation extends StatefulWidget {
+class SideNavbar extends StatefulWidget {
   final List<SideItemModel> pages;
   final double navigationWidth;
   final Color navigationBackgroundColor;
@@ -14,7 +14,7 @@ class VerticalNavigation extends StatefulWidget {
   final bool reversed;
   final EdgeInsets? padding;
 
-  VerticalNavigation({
+  SideNavbar({
     Key? key,
     required this.pages,
     this.navigationWidth = 75,
@@ -26,10 +26,10 @@ class VerticalNavigation extends StatefulWidget {
         super(key: key);
 
   @override
-  _VerticalNavigationState createState() => _VerticalNavigationState();
+  _SideNavbarState createState() => _SideNavbarState();
 }
 
-class _VerticalNavigationState extends State<VerticalNavigation> {
+class _SideNavbarState extends State<SideNavbar> {
   late AutoScrollController controller;
 
   @override
@@ -125,7 +125,6 @@ class _VerticalNavigationState extends State<VerticalNavigation> {
       if (item.mostVisible) {
         list.add(
           Flexible(
-            key: item.keyFlex,
             child: FocusSideItem(
               onTap: () {
                 item.onTap?.call();
@@ -141,7 +140,6 @@ class _VerticalNavigationState extends State<VerticalNavigation> {
       } else {
         list.add(
           Flexible(
-            key: item.keyFlex,
             flex: 0,
             child: DefaultSideItem(
               decoration: widget.decorationItem,
