@@ -13,6 +13,10 @@ class SideNavbar extends StatefulWidget {
   final BoxDecoration decorationItem;
   final bool reversed;
   final EdgeInsets? padding;
+  final EdgeInsets? paddingNavigation;
+  final bool shrinkWrap;
+  final AutoScrollController? controller;
+  final ScrollPhysics? physics;
 
   SideNavbar({
     Key? key,
@@ -20,7 +24,11 @@ class SideNavbar extends StatefulWidget {
     this.navigationWidth = 75,
     this.navigationBackgroundColor = Colors.white10,
     this.padding,
+    this.paddingNavigation = const EdgeInsets.all(10),
     this.reversed = false,
+    this.shrinkWrap = false,
+    this.controller,
+    this.physics,
     BoxDecoration? decoration,
   })  : decorationItem = decoration ?? BoxDecoration(),
         super(key: key);
@@ -34,7 +42,7 @@ class _SideNavbarState extends State<SideNavbar> {
 
   @override
   void initState() {
-    controller = AutoScrollController(
+    controller = widget.controller ?? AutoScrollController(
       viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
       axis: Axis.vertical,
     );
@@ -93,13 +101,15 @@ class _SideNavbarState extends State<SideNavbar> {
     return Container(
       width: MediaQuery.of(context).size.width - widget.navigationWidth,
       child: ListView.builder(
+        physics: widget.physics,
         padding: widget.padding,
+        shrinkWrap: widget.shrinkWrap,
         controller: controller,
         scrollDirection: Axis.vertical,
         itemCount: widget.pages.length,
         itemBuilder: (context, index) {
           return VisibilityDetector(
-            key: Key('VisibilityDetector-$index'),
+            key: Key('INDEX-flutter-side-navbar-$index'),
             onVisibilityChanged: (visibilityInfo) {
               widget.pages[index].visibilityPercentage = visibilityInfo.visibleFraction * 100;
               _defineMostVisiblePage();
@@ -157,7 +167,7 @@ class _SideNavbarState extends State<SideNavbar> {
 
     return Container(
       height: MediaQuery.of(context).size.height,
-      padding: const EdgeInsets.all(10),
+      padding: widget.paddingNavigation,
       width: widget.navigationWidth,
       color: widget.navigationBackgroundColor,
       child: Column(
