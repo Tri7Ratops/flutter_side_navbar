@@ -71,30 +71,39 @@ class _SideNavbarState extends State<SideNavbar> {
   @override
   Widget build(BuildContext context) {
     if (widget.reversed) {
-      return Stack(
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        child: Stack(
+          children: [
+            AnimatedPositioned(
+              duration: const Duration(seconds: 1),
+              curve: Curves.fastOutSlowIn,
+              top: position,
+              left: 0,
+              child: _getNavigationColumn(context),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: widget.navigationWidth),
+              child: _getPagesColumn(),
+            ),
+          ],
+        ),
+      );
+    }
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: Stack(
         children: [
+          _getPagesColumn(),
           AnimatedPositioned(
             duration: const Duration(seconds: 1),
             curve: Curves.fastOutSlowIn,
             top: position,
-            right: 0.0,
+            right: 0,
             child: _getNavigationColumn(context),
           ),
-          _getPagesColumn(),
         ],
-      );
-    }
-    return Stack(
-      children: [
-        _getPagesColumn(),
-        AnimatedPositioned(
-          duration: const Duration(seconds: 1),
-          curve: Curves.fastOutSlowIn,
-          top: position,
-          right: 0.0,
-          child: _getNavigationColumn(context),
-        ),
-      ],
+      ),
     );
   }
 
