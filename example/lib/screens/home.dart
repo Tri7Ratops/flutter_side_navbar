@@ -7,15 +7,11 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white70,
-        appBar: AppBar(
-          title: Text("Home PAGE"),
-        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
               _getContainer(height: 400, color: Colors.green, margeVertical: 0),
               SideNavbar(
-                reversed: true,
                 navigationBackgroundColor: Colors.black,
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
@@ -106,6 +102,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              _getContainer(height: 400, color: Colors.blue, margeVertical: 0),
+
             ],
           ),
         ),

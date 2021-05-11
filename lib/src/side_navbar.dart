@@ -12,6 +12,7 @@ class SideNavbar extends StatefulWidget {
   final Color navigationBackgroundColor;
   final BoxDecoration decorationItem;
   final bool reversed;
+  final bool appBarIsShown;
   final EdgeInsets? padding;
   final EdgeInsets? paddingNavigation;
   final bool shrinkWrap;
@@ -27,6 +28,7 @@ class SideNavbar extends StatefulWidget {
     this.paddingNavigation = const EdgeInsets.all(10),
     this.reversed = false,
     this.shrinkWrap = false,
+    this.appBarIsShown = false,
     this.controller,
     this.physics,
     BoxDecoration? decoration,
@@ -112,7 +114,7 @@ class _SideNavbarState extends State<SideNavbar> {
     final pos = renderBox!.localToGlobal(Offset.zero);
 
     double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top + widget.paddingNavigation!.bottom : 0;
-    double navigationPos = (-pos.dy < -AppBar().preferredSize.height - 13 - paddingNav) ? 0 : (-pos.dy + AppBar().preferredSize.height + 10 + paddingNav);
+    double navigationPos = (-pos.dy < -(widget.appBarIsShown ? AppBar().preferredSize.height : -1) - 13 - paddingNav) ? 0 : (-pos.dy + (widget.appBarIsShown ? AppBar().preferredSize.height : -1) + 10 + paddingNav);
 
     if (this.mounted && navigationPos != position) {
       setState(() => position = navigationPos);
@@ -213,7 +215,7 @@ class _SideNavbarState extends State<SideNavbar> {
 
     final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
     final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
-    final heightContainer = MediaQuery.of(context).size.height - AppBar().preferredSize.height - paddingMedia - paddingNavigation - 10;
+    final heightContainer = MediaQuery.of(context).size.height - (widget.appBarIsShown ? AppBar().preferredSize.height : -2) - paddingMedia - paddingNavigation - 10;
     return Container(
       height: heightContainer,
       padding: widget.paddingNavigation,
