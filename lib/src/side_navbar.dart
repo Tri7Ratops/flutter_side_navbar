@@ -113,8 +113,14 @@ class _SideNavbarState extends State<SideNavbar> {
     final RenderBox? renderBox = _keyList.currentContext!.findRenderObject() as RenderBox;
     final pos = renderBox!.localToGlobal(Offset.zero);
 
+    print(-pos.dy);
+    print("SIZE: ${renderBox.size} ==> ${pos.distance}");
     double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top + widget.paddingNavigation!.bottom : 0;
     double navigationPos = (-pos.dy < -(widget.appBarIsShown ? AppBar().preferredSize.height : -1) - 13 - paddingNav) ? 0 : (-pos.dy + (widget.appBarIsShown ? AppBar().preferredSize.height : -1) + 10 + paddingNav);
+
+    if (navigationPos + MediaQuery.of(context).size.height > renderBox.size.height) {
+      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown ? AppBar().preferredSize.height + 2 : -1) + 8 + paddingNav;
+    }
 
     if (this.mounted && navigationPos != position) {
       setState(() => position = navigationPos);
