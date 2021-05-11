@@ -38,41 +38,76 @@ class SideNavbar extends StatefulWidget {
 }
 
 class _SideNavbarState extends State<SideNavbar> {
-  late AutoScrollController controller;
+  late AutoScrollController _controller;
+  GlobalKey _keyList = GlobalKey();
+  double position = 0;
 
   @override
   void initState() {
-    controller = widget.controller ?? AutoScrollController(
-      viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
-      axis: Axis.vertical,
-    );
-
+    _controller = widget.controller ??
+        AutoScrollController(
+          viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+          axis: Axis.vertical,
+        );
     for (SideItemModel item in widget.pages) {
       if (item.page != null) {
         item.mostVisible = true;
         break;
       }
     }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _getSizes();
+    });
 
     super.initState();
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.reversed) {
-      return Row(
+      return Stack(
         children: [
-          _getNavigationColumn(context),
+          AnimatedPositioned(
+            duration: const Duration(seconds: 1),
+            curve: Curves.fastOutSlowIn,
+            top: position,
+            right: 0.0,
+            child: _getNavigationColumn(context),
+          ),
           _getPagesColumn(),
         ],
       );
     }
-    return Row(
+    return Stack(
       children: [
         _getPagesColumn(),
-        _getNavigationColumn(context),
+        AnimatedPositioned(
+          duration: const Duration(seconds: 1),
+          curve: Curves.fastOutSlowIn,
+          top: position,
+          right: 0.0,
+          child: _getNavigationColumn(context),
+        ),
       ],
     );
+  }
+
+  _getSizes() {
+    final RenderBox? renderBox = _keyList.currentContext!.findRenderObject() as RenderBox;
+    final pos = renderBox!.localToGlobal(Offset.zero);
+
+    double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top + widget.paddingNavigation!.bottom : 0;
+    double navigationPos = (-pos.dy < -AppBar().preferredSize.height - 13 - paddingNav) ? 0 : (-pos.dy + AppBar().preferredSize.height + 10 + paddingNav);
+
+    if (this.mounted && navigationPos != position) {
+      setState(() => position = navigationPos);
+    }
   }
 
   _defineMostVisiblePage() {
@@ -99,24 +134,26 @@ class _SideNavbarState extends State<SideNavbar> {
 
   Widget _getPagesColumn() {
     return Container(
+      key: _keyList,
       width: MediaQuery.of(context).size.width - widget.navigationWidth,
       child: ListView.builder(
         physics: widget.physics,
         padding: widget.padding,
         shrinkWrap: widget.shrinkWrap,
-        controller: controller,
+        controller: _controller,
         scrollDirection: Axis.vertical,
         itemCount: widget.pages.length,
         itemBuilder: (context, index) {
           return VisibilityDetector(
             key: Key('INDEX-flutter-side-navbar-$index'),
             onVisibilityChanged: (visibilityInfo) {
+              _getSizes();
               widget.pages[index].visibilityPercentage = visibilityInfo.visibleFraction * 100;
               _defineMostVisiblePage();
             },
             child: AutoScrollTag(
               key: ValueKey(index),
-              controller: controller,
+              controller: _controller,
               index: index,
               child: widget.pages[index].page ?? Container(),
             ),
@@ -138,8 +175,8 @@ class _SideNavbarState extends State<SideNavbar> {
             child: FocusSideItem(
               onTap: () {
                 item.onTap?.call();
-                controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
-                controller.highlight(index);
+                _controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
+                _controller.highlight(index);
               },
               reversed: widget.reversed,
               decoration: widget.decorationItem,
@@ -155,8 +192,8 @@ class _SideNavbarState extends State<SideNavbar> {
               decoration: widget.decorationItem,
               onTap: () {
                 item.onTap?.call();
-                controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
-                controller.highlight(index);
+                _controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
+                _controller.highlight(index);
               },
               item: item,
             ),
@@ -165,8 +202,11 @@ class _SideNavbarState extends State<SideNavbar> {
       }
     }
 
+    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
+    final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
+    final heightContainer = MediaQuery.of(context).size.height - AppBar().preferredSize.height - paddingMedia - paddingNavigation - 10;
     return Container(
-      height: MediaQuery.of(context).size.height,
+      height: heightContainer,
       padding: widget.paddingNavigation,
       width: widget.navigationWidth,
       color: widget.navigationBackgroundColor,
