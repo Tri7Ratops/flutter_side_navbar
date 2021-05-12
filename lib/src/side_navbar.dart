@@ -106,7 +106,9 @@ class _SideNavbarState extends State<SideNavbar> {
   }
 
   _getSizes() {
-    final RenderBox? renderBox = _keyList.currentContext!.findRenderObject() as RenderBox;
+    BuildContext? currentCtxt = _keyList.currentContext;
+    if (currentCtxt == null) return;
+    final RenderBox? renderBox = currentCtxt.findRenderObject() as RenderBox;
     final pos = renderBox!.localToGlobal(Offset.zero);
 
     double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;

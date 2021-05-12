@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_side_navbar/flutter_side_navbar.dart';
+
+import 'side_navbar_pages/side_navbar_pages.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -10,101 +11,47 @@ class HomeScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              _getContainer(height: 300, color: Colors.yellow),
-              SideNavbar(
-                shrinkWrap: true,
-           //     appBarIsShown: true,
-                physics: const NeverScrollableScrollPhysics(),
-                //             reversed: true,
-                navigationBackgroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                pages: [
-                  SideItemModel(
-                    defaultIconColor: Colors.blue,
-                    onTap: () {},
-                    page: Column(
-                      children: [
-                        _getContainer(
-                          height: 100,
-                          color: Colors.red,
-                        ),
-                        _getContainer(
-                          height: 300,
-                          color: Colors.red,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.red,
-                        ),
-                        _getContainer(
-                          height: 50,
-                          color: Colors.red,
-                        ),
-                        _getContainer(
-                          height: 200,
-                          color: Colors.red,
-                        ),
-                      ],
-                    ),
-                    icon: Icons.home_filled,
-                  ),
-                  SideItemModel(
-                    defaultIconColor: Colors.blue,
-                    onTap: () {},
-                    page: Column(
-                      children: [
-                        _getContainer(
-                          height: 400,
-                          color: Colors.green,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.green,
-                        ),
-                        _getContainer(
-                          height: 200,
-                          color: Colors.green,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.green,
-                        ),
-                      ],
-                    ),
-                    icon: Icons.verified_user,
-                  ),
-                  SideItemModel(
-                    defaultIconColor: Colors.blue,
-                    onTap: () {},
-                    page: Column(
-                      children: [
-                        _getContainer(
-                          height: 100,
-                          color: Colors.purple,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.purple,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.purple,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.purple,
-                        ),
-                        _getContainer(
-                          height: 100,
-                          color: Colors.purple,
-                        ),
-                      ],
-                    ),
-                    icon: Icons.lock_clock,
-                  ),
-                ],
+              _getButton(
+                title: "Basic",
+                color: Colors.orangeAccent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Basic()),
+                ),
               ),
-              _getContainer(height: 300, color: Colors.lightGreen),
+              _getButton(
+                  title: "Basic reversed",
+                color: Colors.redAccent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BasicReversed()),
+                ),
+              ),
+              _getButton(
+                title: "Basic with AppBar",
+                color: Colors.greenAccent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => BasicWithAppbar()),
+                ),
+              ),
+              _getButton(
+                title: "Scrollable",
+                color: Colors.purpleAccent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScrollableSideBar()),
+                ),
+              ),
+              _getButton(
+                title: "Scrollable with AppBar",
+                color: Colors.blueAccent,
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ScrollableWithAppbar()),
+                ),
+              ),
+
             ],
           ),
         ),
@@ -112,12 +59,19 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContainer({required double height, required Color color, double margeVertical = 10.0}) {
-    return Container(
-      height: height,
-      width: double.infinity,
-      color: color,
-      margin: EdgeInsets.only(bottom: margeVertical),
+  Widget _getButton({required String title, required Color color, required Function() onPressed}) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Container(
+        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.all(Radius.circular(10))),
+        width: double.infinity,
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          title.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white70),
+        ),
+      ),
     );
   }
 }
