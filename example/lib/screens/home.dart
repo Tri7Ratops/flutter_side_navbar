@@ -7,9 +7,15 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white70,
-        body:
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              _getContainer(height: 300, color: Colors.yellow),
               SideNavbar(
-//                appBarIsShown: true,
+                shrinkWrap: true,
+           //     appBarIsShown: true,
+                physics: const NeverScrollableScrollPhysics(),
+                //             reversed: true,
                 navigationBackgroundColor: Colors.black,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 pages: [
@@ -98,7 +104,10 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
+              _getContainer(height: 300, color: Colors.lightGreen),
+            ],
+          ),
+        ),
       ),
     );
   }

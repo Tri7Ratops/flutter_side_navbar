@@ -57,10 +57,6 @@ class _SideNavbarState extends State<SideNavbar> {
         break;
       }
     }
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _getSizes();
-    });
-
     super.initState();
   }
 
@@ -113,13 +109,12 @@ class _SideNavbarState extends State<SideNavbar> {
     final RenderBox? renderBox = _keyList.currentContext!.findRenderObject() as RenderBox;
     final pos = renderBox!.localToGlobal(Offset.zero);
 
-    print(-pos.dy);
-    print("SIZE: ${renderBox.size} ==> ${pos.distance}");
-    double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top + widget.paddingNavigation!.bottom : 0;
-    double navigationPos = (-pos.dy < -(widget.appBarIsShown ? AppBar().preferredSize.height : -1) - 13 - paddingNav) ? 0 : (-pos.dy + (widget.appBarIsShown ? AppBar().preferredSize.height : -1) + 10 + paddingNav);
+    double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;
+    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
+    double navigationPos = (-pos.dy < -(widget.appBarIsShown ? kToolbarHeight : 0) - 12 - paddingNav) ? 0 : (-pos.dy + (widget.appBarIsShown ? kToolbarHeight : 0) + paddingNav + paddingMedia + 12);
 
     if (navigationPos + MediaQuery.of(context).size.height > renderBox.size.height) {
-      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown ? AppBar().preferredSize.height + 2 : -1) + 8 + paddingNav;
+      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown ? kToolbarHeight : 0) + paddingNav;
     }
 
     if (this.mounted && navigationPos != position) {
@@ -221,7 +216,7 @@ class _SideNavbarState extends State<SideNavbar> {
 
     final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
     final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
-    final heightContainer = MediaQuery.of(context).size.height - (widget.appBarIsShown ? AppBar().preferredSize.height : -2) - paddingMedia - paddingNavigation - 10;
+    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown ? kToolbarHeight : 0);
     return Container(
       height: heightContainer,
       padding: widget.paddingNavigation,
