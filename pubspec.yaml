@@ -1,7 +1,6 @@
 name: flutter_side_navbar
 description: Side Navigation bar for your app', with automatic detection of the widget most visible...
 version: 1.0.0
-author: Tri7Ratops
 homepage: https://github.com/Tri7Ratops/flutter_side_navbar
 
 environment:
