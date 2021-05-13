@@ -11,6 +11,7 @@ class ScrollableSideBar extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Utils.backButton(context),
               Utils.getContainer(height: 300, color: Colors.yellow),
               SideNavbar(
                 shrinkWrap: true,

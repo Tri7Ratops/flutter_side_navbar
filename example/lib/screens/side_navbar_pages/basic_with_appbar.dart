@@ -1,4 +1,5 @@
 import 'package:example/widgets/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_navbar/flutter_side_navbar.dart';
 
@@ -6,13 +7,12 @@ class BasicWithAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: CupertinoPageScaffold(
         backgroundColor: Colors.white70,
-        appBar: AppBar(
-          title: Text("It's an AppBar"),
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Sample Code'),
         ),
-        body: SideNavbar(
-          shrinkWrap: true,
+          child: SideNavbar(
           appBarIsShown: true,
           navigationBackgroundColor: Colors.black,
           padding: const EdgeInsets.symmetric(horizontal: 20),

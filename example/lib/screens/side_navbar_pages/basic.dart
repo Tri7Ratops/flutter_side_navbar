@@ -17,6 +17,7 @@ class Basic extends StatelessWidget {
               onTap: () {},
               page: Column(
                 children: [
+                  Utils.backButton(context),
                   Utils.getContainer(
                     height: 100,
                     color: Colors.red,
@@ -40,6 +41,7 @@ class Basic extends StatelessWidget {
                 ],
               ),
               icon: Icons.home_filled,
+              iconTitle: "Home",
             ),
             SideItemModel(
               defaultIconColor: Colors.blue,
@@ -65,6 +67,7 @@ class Basic extends StatelessWidget {
                 ],
               ),
               icon: Icons.verified_user,
+              iconTitle: "I don't know what I'm writing but here we are",
             ),
             SideItemModel(
               defaultIconColor: Colors.blue,

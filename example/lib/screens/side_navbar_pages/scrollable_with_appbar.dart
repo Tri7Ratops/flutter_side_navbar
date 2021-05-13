@@ -1,4 +1,5 @@
 import 'package:example/widgets/utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_side_navbar/flutter_side_navbar.dart';
 
@@ -6,12 +7,12 @@ class ScrollableWithAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("It's an AppBar"),
+      child: CupertinoPageScaffold(
+        navigationBar: const CupertinoNavigationBar(
+          middle: Text('Sample Code'),
         ),
         backgroundColor: Colors.white70,
-        body: SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Utils.getContainer(height: 300, color: Colors.yellow),

@@ -18,6 +18,7 @@ class BasicReversed extends StatelessWidget {
               onTap: () {},
               page: Column(
                 children: [
+                  Utils.backButton(context),
                   Utils.getContainer(
                     height: 100,
                     color: Colors.red,

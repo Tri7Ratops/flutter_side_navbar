@@ -57,6 +57,9 @@ class _SideNavbarState extends State<SideNavbar> {
         break;
       }
     }
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -94,7 +97,7 @@ class _SideNavbarState extends State<SideNavbar> {
         children: [
           _getPagesColumn(),
           AnimatedPositioned(
-            duration: const Duration(seconds: 1),
+            duration: const Duration(milliseconds: 400),
             curve: Curves.fastOutSlowIn,
             top: position,
             right: 0,
@@ -106,17 +109,24 @@ class _SideNavbarState extends State<SideNavbar> {
   }
 
   _getSizes() {
-    BuildContext? currentCtxt = _keyList.currentContext;
-    if (currentCtxt == null) return;
-    final RenderBox? renderBox = currentCtxt.findRenderObject() as RenderBox;
+    BuildContext? currentCxt = _keyList.currentContext;
+    if (currentCxt == null) return;
+    final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
     final pos = renderBox!.localToGlobal(Offset.zero);
 
     double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;
     final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
-    double navigationPos = (-pos.dy < -(widget.appBarIsShown ? kToolbarHeight : 0) - 12 - paddingNav) ? 0 : (-pos.dy + (widget.appBarIsShown ? kToolbarHeight : 0) + paddingNav + paddingMedia + 12);
 
-    if (navigationPos + MediaQuery.of(context).size.height > renderBox.size.height) {
-      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown ? kToolbarHeight : 0) + paddingNav;
+    double posi = -pos.dy;
+    double basicPos = (widget.appBarIsShown ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia;
+
+    double posiTrue = widget.shrinkWrap && widget.appBarIsShown ? 0 : paddingMedia;
+    double posiFalse = -pos.dy + (widget.shrinkWrap ? AppBar().preferredSize.height - (widget.appBarIsShown ? -14 : 28) : 0) + 8 + paddingNav;
+
+    double navigationPos = (posi < basicPos) ? posiTrue : posiFalse;
+
+    if (navigationPos != posiTrue && navigationPos + MediaQuery.of(context).size.height >= renderBox.size.height) {
+      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown || widget.shrinkWrap ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia + 8;
     }
 
     if (this.mounted && navigationPos != position) {
@@ -216,11 +226,19 @@ class _SideNavbarState extends State<SideNavbar> {
       }
     }
 
+    BuildContext? currentCxt = _keyList.currentContext;
+    if (currentCxt == null) {
+      return Container();
+    }
     final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
     final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
-    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown ? kToolbarHeight : 0);
+
+    final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
+    final heightContainerConstraint = renderBox!.constraints.maxHeight - paddingMedia;
+    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown || widget.shrinkWrap ? kToolbarHeight : 0);
+
     return Container(
-      height: heightContainer,
+      height: heightContainerConstraint.isInfinite ? heightContainer : heightContainerConstraint,
       padding: widget.paddingNavigation,
       width: widget.navigationWidth,
       color: widget.navigationBackgroundColor,

@@ -9,4 +9,11 @@ class Utils {
       margin: EdgeInsets.only(bottom: margeVertical),
     );
   }
+
+  static Widget backButton(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: Text("Back"),
+    );
+  }
 }
