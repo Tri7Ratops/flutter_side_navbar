@@ -7,17 +7,43 @@ import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 class SideNavbar extends StatefulWidget {
+  /// List of all the pages to show
   final List<SideItemModel> pages;
+
+  /// Widget of navigationWidth
   final double navigationWidth;
+
+  /// Navigation background color
   final Color navigationBackgroundColor;
+
+  /// Used to personalised the container of the navigation buttons
   final BoxDecoration decorationItem;
+
+  /// Used to change the position of the navigation
+  ///
+  /// reversed = false ==> Navigation on the right
+  /// reversed = true ==> Navigation on the left
   final bool reversed;
+
+  /// Used to specify to the package if an AppBar is shown
   final bool appBarIsShown;
+
+  /// Used to set the padding for the page
   final EdgeInsets? padding;
+
+  /// Used to set the padding of the navigation
   final EdgeInsets? paddingNavigation;
+
+  /// If the scroll view does not shrink wrap, then the scroll view will expand to the maximum allowed size
   final bool shrinkWrap;
+
+  /// Used to set the scroll controller of the package for specific development
   final AutoScrollController? controller;
+
+  /// Used to set the scroll physics of the package
   final ScrollPhysics? physics;
+
+  /// Used to set the duration of the animation when a user tap on a navigation item's and the scroll is moving
   final Duration duration;
 
   SideNavbar({
@@ -42,29 +68,42 @@ class SideNavbar extends StatefulWidget {
 }
 
 class _SideNavbarState extends State<SideNavbar> {
+  /// Used to scroll to a specific page
   late AutoScrollController _controller;
+
+  /// Used to determine the maxHeight of all the pages
   GlobalKey _keyList = GlobalKey();
+
+  /// Used for the scroll when a user change the current page
   double position = 0;
 
   @override
   void initState() {
+    /// The controller can't be null
+    /// So if bo controller is given in parameters, we define one
     _controller = widget.controller ??
         AutoScrollController(
           viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
           axis: Axis.vertical,
         );
+
+    /// Set by default the first page non null to be the most visible
     for (SideItemModel item in widget.pages) {
       if (item.page != null) {
         item.mostVisible = true;
         break;
       }
     }
+
+    /// After the post frame callback, update the page because the currentContext can't be known during the build
+    /// and the navigation have a size of 0
     WidgetsBinding.instance!.addPostFrameCallback((_) => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
+    /// Used to get ride of the controller
     _controller.dispose();
     super.dispose();
   }
@@ -109,22 +148,38 @@ class _SideNavbarState extends State<SideNavbar> {
   }
 
   _getSizes() {
+    /// Get the current context of the ListView who contains all the pages
     BuildContext? currentCxt = _keyList.currentContext;
     if (currentCxt == null) return;
+
+    /// Get the renderBox of the ListView
     final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
+
+    /// Used to get the position of the ListView
     final pos = renderBox!.localToGlobal(Offset.zero);
 
+    /// Used to get the navigation padding set by the user
     double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;
+
+    /// Used to get the padding of the page (iOS)
     final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
 
+    /// ListView position
     double posi = -pos.dy;
+
+    /// ListView base position
     double basicPos = (widget.appBarIsShown ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia;
 
+    /// ListView base position
     double posiTrue = widget.shrinkWrap && widget.appBarIsShown ? 0 : paddingMedia;
+
+    /// Used to determine the position to set to navigation
     double posiFalse = -pos.dy + (widget.shrinkWrap ? AppBar().preferredSize.height - (widget.appBarIsShown ? -14 : 28) : 0) + 8 + paddingNav;
 
     double navigationPos = (posi < basicPos) ? posiTrue : posiFalse;
 
+    /// Used to avoid the navigation to go out of the constraints of the ListView
+    /// More particularly for the end of the ListView
     if (navigationPos != posiTrue && navigationPos + MediaQuery.of(context).size.height >= renderBox.size.height) {
       navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown || widget.shrinkWrap ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia + 8;
     }
@@ -135,23 +190,34 @@ class _SideNavbarState extends State<SideNavbar> {
   }
 
   _defineMostVisiblePage() {
+    /// Current most visible page
     SideItemModel? mostItemVisible;
+
+    /// Old most visible page
     SideItemModel? lastMostItemVisible;
 
+    /// Go thought all the pages to determine the most visible
     for (SideItemModel item in widget.pages) {
       if (item.mostVisible) {
         lastMostItemVisible = item;
       }
       item.mostVisible = false;
 
+      /// Compare the current item in the list if it's most visible than the current found
       if (item.page != null && (mostItemVisible == null || item.visibilityPercentage > mostItemVisible.visibilityPercentage)) {
         mostItemVisible = item;
       }
     }
     mostItemVisible?.mostVisible = true;
+
+    /// Used to avoid useless update if the most visible page he's the same
     if (mostItemVisible != lastMostItemVisible && this.mounted) {
       if (this.mounted) setState(() {});
+
+      /// Used for specific development set by the user
       lastMostItemVisible?.lostFocus?.call();
+
+      /// Used for specific development set by the user
       mostItemVisible?.onMostVisible?.call();
     }
   }
@@ -172,7 +238,10 @@ class _SideNavbarState extends State<SideNavbar> {
             key: Key('INDEX-flutter-side-navbar-$index'),
             onVisibilityChanged: (visibilityInfo) {
               _getSizes();
+
+              /// Update the visibility percentage of the page from 0 to 100%
               widget.pages[index].visibilityPercentage = visibilityInfo.visibleFraction * 100;
+
               _defineMostVisiblePage();
             },
             child: AutoScrollTag(
@@ -188,6 +257,40 @@ class _SideNavbarState extends State<SideNavbar> {
   }
 
   Widget _getNavigationColumn(BuildContext context) {
+    /// Get the current context of the ListView who contains all of the pages
+    BuildContext? currentCxt = _keyList.currentContext;
+    if (currentCxt == null) {
+      return Container();
+    }
+
+    /// Get the padding of the screen (iOS)
+    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
+
+    /// Get the padding set by the user
+    final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
+
+    /// Get the renderBow of the ListView with the constaints
+    final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
+
+    /// Remove the padding from the maxHeight available to the ListView
+    final heightContainerConstraint = renderBox!.constraints.maxHeight - paddingMedia;
+
+    /// Specific heightContainer calculation when the heightContainerConstraint is infinite
+    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown || widget.shrinkWrap ? kToolbarHeight : 0);
+
+    return Container(
+      height: heightContainerConstraint.isInfinite ? heightContainer : heightContainerConstraint,
+      padding: widget.paddingNavigation,
+      width: widget.navigationWidth,
+      color: widget.navigationBackgroundColor,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: _getNavigationItems(),
+      ),
+    );
+  }
+
+  List<Widget> _getNavigationItems() {
     List<Widget> list = [];
 
     for (SideItemModel item in widget.pages) {
@@ -198,9 +301,7 @@ class _SideNavbarState extends State<SideNavbar> {
           Flexible(
             child: FocusSideItem(
               onTap: () {
-                item.onTap?.call();
-                _controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
-                _controller.highlight(index);
+                _scrollTo(item, index);
               },
               reversed: widget.reversed,
               decoration: widget.decorationItem,
@@ -215,9 +316,7 @@ class _SideNavbarState extends State<SideNavbar> {
             child: DefaultSideItem(
               decoration: widget.decorationItem,
               onTap: () {
-                item.onTap?.call();
-                _controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
-                _controller.highlight(index);
+                _scrollTo(item, index);
               },
               item: item,
             ),
@@ -225,27 +324,17 @@ class _SideNavbarState extends State<SideNavbar> {
         );
       }
     }
+    return list;
+  }
 
-    BuildContext? currentCxt = _keyList.currentContext;
-    if (currentCxt == null) {
-      return Container();
-    }
-    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
-    final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
+  _scrollTo(SideItemModel item, int index) {
+    /// Used for specific development when the user tap on a navigation item's
+    item.onTap?.call();
 
-    final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
-    final heightContainerConstraint = renderBox!.constraints.maxHeight - paddingMedia;
-    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown || widget.shrinkWrap ? kToolbarHeight : 0);
+    /// Used to define the page to scroll to
+    _controller.scrollToIndex(index, preferPosition: AutoScrollPosition.begin);
 
-    return Container(
-      height: heightContainerConstraint.isInfinite ? heightContainer : heightContainerConstraint,
-      padding: widget.paddingNavigation,
-      width: widget.navigationWidth,
-      color: widget.navigationBackgroundColor,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: list,
-      ),
-    );
+    /// Scroll to the index position
+    _controller.highlight(index);
   }
 }
