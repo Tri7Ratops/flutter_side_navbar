@@ -59,9 +59,7 @@ class _SideNavbarState extends State<SideNavbar> {
         break;
       }
     }
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      setState(() {});
-    });
+    WidgetsBinding.instance!.addPostFrameCallback((_) => setState(() {}));
     super.initState();
   }
 
@@ -152,7 +150,7 @@ class _SideNavbarState extends State<SideNavbar> {
     }
     mostItemVisible?.mostVisible = true;
     if (mostItemVisible != lastMostItemVisible && this.mounted) {
-      setState(() {});
+      if (this.mounted) setState(() {});
       lastMostItemVisible?.lostFocus?.call();
       mostItemVisible?.onMostVisible?.call();
     }
