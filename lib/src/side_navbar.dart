@@ -18,6 +18,7 @@ class SideNavbar extends StatefulWidget {
   final bool shrinkWrap;
   final AutoScrollController? controller;
   final ScrollPhysics? physics;
+  final Duration duration;
 
   SideNavbar({
     Key? key,
@@ -29,6 +30,7 @@ class SideNavbar extends StatefulWidget {
     this.reversed = false,
     this.shrinkWrap = false,
     this.appBarIsShown = false,
+    this.duration = const Duration(milliseconds: 400),
     this.controller,
     this.physics,
     BoxDecoration? decoration,
@@ -97,7 +99,7 @@ class _SideNavbarState extends State<SideNavbar> {
         children: [
           _getPagesColumn(),
           AnimatedPositioned(
-            duration: const Duration(milliseconds: 400),
+            duration: widget.duration,
             curve: Curves.fastOutSlowIn,
             top: position,
             right: 0,
