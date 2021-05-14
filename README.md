@@ -193,14 +193,20 @@ You're now ready to go !
 ## Examples
 
 Basic: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic.dart]
+
 Reversed: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_reversed.dart]
+
 Basic with AppBar: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_with_appbar.dart]
+
 Inside another scroll widget: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable.dart]
+
 Inside another scroll widget + AppBar: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable_with_appbar.dart]
 
 ## Packages used
 
 `equatable`: [https://pub.dev/packages/equatable]
+
 `scroll_to_index`: [https://pub.dev/packages/scroll_to_index]
+
 `visibility_detector`: [https://pub.dev/packages/visibility_detector]
 
