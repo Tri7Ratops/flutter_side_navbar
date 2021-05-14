@@ -1,14 +1,46 @@
-# flutter_side_navbar
+# scroll-to-index
 
-A new Flutter package project.
+This package provides a way to have a side navbar with some personalisation with Flutter.
+
+<table>
+  <thead>
+    <tr>
+        <th>Basic usage</th>
+        <th>Reversed usage</th>
+        <th>Inside another scroll</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+        <td>
+            <img src="assets/basic_example.gif" alt="Basic usage" />
+        </td>
+        <td>
+            <img src="assets/reverse_example.gif" alt="Reversed usage" />
+        </td>
+        <td>
+            <img src="assets/shrinkwrap_example.gif" alt="Inside another scroll" />
+        </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Getting Started
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+In the `pubspec.yaml` of your flutter project, add the following dependency:
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+```yaml
+dependencies:
+  ...
+  flutter_side_navbar: any
+```
+
+In your library add the following import:
+
+```dart
+import 'package:flutter_side_navbar/flutter_side_navbar.dart';
+```
+
+For help getting started with Flutter, view the online [documentation](https://flutter.io/).
+
+## Usage
