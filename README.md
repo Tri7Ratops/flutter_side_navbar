@@ -1,4 +1,4 @@
-# scroll-to-index
+# flutter_side_navbar
 
 This package provides a way to have a side navbar with some personalisation with Flutter.
 

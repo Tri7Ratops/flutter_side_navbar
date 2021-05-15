@@ -1,5 +1,8 @@
 # CHANGES
 
+**1.0.2**
+* Update READ_ME
+
 **1.0.1**
 * Update READ_ME
 * Correct issues found in the `pass static analysis`
