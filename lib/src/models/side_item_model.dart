@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-
-
 // ignore: must_be_immutable
 class SideItemModel extends Equatable {
   /// Widget to show
@@ -60,13 +58,13 @@ class SideItemModel extends Equatable {
   /// https://pub.dev/packages/equatable
   @override
   List<Object?> get props => [
-    page,
-    icon,
-    iconTitle,
-    visibilityPercentage,
-    mostVisible,
-    onMostVisible,
-    lostFocus,
-    focusBackgroundColor,
-  ];
+        page,
+        icon,
+        iconTitle,
+        visibilityPercentage,
+        mostVisible,
+        onMostVisible,
+        lostFocus,
+        focusBackgroundColor,
+      ];
 }

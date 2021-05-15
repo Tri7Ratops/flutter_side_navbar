@@ -83,7 +83,8 @@ class _SideNavbarState extends State<SideNavbar> {
     /// So if bo controller is given in parameters, we define one
     _controller = widget.controller ??
         AutoScrollController(
-          viewportBoundaryGetter: () => Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+          viewportBoundaryGetter: () =>
+              Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
           axis: Axis.vertical,
         );
 
@@ -159,29 +160,49 @@ class _SideNavbarState extends State<SideNavbar> {
     final pos = renderBox!.localToGlobal(Offset.zero);
 
     /// Used to get the navigation padding set by the user
-    double paddingNav = widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;
+    double paddingNav =
+        widget.paddingNavigation != null ? widget.paddingNavigation!.top : 0;
 
     /// Used to get the padding of the page (iOS)
-    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
+    final double paddingMedia = MediaQuery.of(context).padding.top +
+        MediaQuery.of(context).padding.bottom;
 
     /// ListView position
     double posi = -pos.dy;
 
     /// ListView base position
-    double basicPos = (widget.appBarIsShown ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia;
+    double basicPos =
+        (widget.appBarIsShown ? AppBar().preferredSize.height : 0) +
+            paddingNav +
+            paddingMedia;
 
     /// ListView base position
-    double posiTrue = widget.shrinkWrap && widget.appBarIsShown ? 0 : paddingMedia;
+    double posiTrue =
+        widget.shrinkWrap && widget.appBarIsShown ? 0 : paddingMedia;
 
     /// Used to determine the position to set to navigation
-    double posiFalse = -pos.dy + (widget.shrinkWrap ? AppBar().preferredSize.height - (widget.appBarIsShown ? -14 : 28) : 0) + 8 + paddingNav;
+    double posiFalse = -pos.dy +
+        (widget.shrinkWrap
+            ? AppBar().preferredSize.height - (widget.appBarIsShown ? -14 : 28)
+            : 0) +
+        8 +
+        paddingNav;
 
     double navigationPos = (posi < basicPos) ? posiTrue : posiFalse;
 
     /// Used to avoid the navigation to go out of the constraints of the ListView
     /// More particularly for the end of the ListView
-    if (navigationPos != posiTrue && navigationPos + MediaQuery.of(context).size.height >= renderBox.size.height) {
-      navigationPos = renderBox.size.height - MediaQuery.of(context).size.height + (widget.appBarIsShown || widget.shrinkWrap ? AppBar().preferredSize.height : 0) + paddingNav + paddingMedia + 8;
+    if (navigationPos != posiTrue &&
+        navigationPos + MediaQuery.of(context).size.height >=
+            renderBox.size.height) {
+      navigationPos = renderBox.size.height -
+          MediaQuery.of(context).size.height +
+          (widget.appBarIsShown || widget.shrinkWrap
+              ? AppBar().preferredSize.height
+              : 0) +
+          paddingNav +
+          paddingMedia +
+          8;
     }
 
     if (this.mounted && navigationPos != position) {
@@ -204,7 +225,10 @@ class _SideNavbarState extends State<SideNavbar> {
       item.mostVisible = false;
 
       /// Compare the current item in the list if it's most visible than the current found
-      if (item.page != null && (mostItemVisible == null || item.visibilityPercentage > mostItemVisible.visibilityPercentage)) {
+      if (item.page != null &&
+          (mostItemVisible == null ||
+              item.visibilityPercentage >
+                  mostItemVisible.visibilityPercentage)) {
         mostItemVisible = item;
       }
     }
@@ -240,7 +264,8 @@ class _SideNavbarState extends State<SideNavbar> {
               _getSizes();
 
               /// Update the visibility percentage of the page from 0 to 100%
-              widget.pages[index].visibilityPercentage = visibilityInfo.visibleFraction * 100;
+              widget.pages[index].visibilityPercentage =
+                  visibilityInfo.visibleFraction * 100;
 
               _defineMostVisiblePage();
             },
@@ -264,22 +289,31 @@ class _SideNavbarState extends State<SideNavbar> {
     }
 
     /// Get the padding of the screen (iOS)
-    final double paddingMedia = MediaQuery.of(context).padding.top + MediaQuery.of(context).padding.bottom;
+    final double paddingMedia = MediaQuery.of(context).padding.top +
+        MediaQuery.of(context).padding.bottom;
 
     /// Get the padding set by the user
-    final double paddingNavigation = widget.paddingNavigation != null ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom) : 0.0;
+    final double paddingNavigation = widget.paddingNavigation != null
+        ? (widget.paddingNavigation!.top + widget.paddingNavigation!.bottom)
+        : 0.0;
 
     /// Get the renderBow of the ListView with the constaints
     final RenderBox? renderBox = currentCxt.findRenderObject() as RenderBox;
 
     /// Remove the padding from the maxHeight available to the ListView
-    final heightContainerConstraint = renderBox!.constraints.maxHeight - paddingMedia;
+    final heightContainerConstraint =
+        renderBox!.constraints.maxHeight - paddingMedia;
 
     /// Specific heightContainer calculation when the heightContainerConstraint is infinite
-    final heightContainer = MediaQuery.of(context).size.height - paddingMedia - paddingNavigation - (widget.appBarIsShown || widget.shrinkWrap ? kToolbarHeight : 0);
+    final heightContainer = MediaQuery.of(context).size.height -
+        paddingMedia -
+        paddingNavigation -
+        (widget.appBarIsShown || widget.shrinkWrap ? kToolbarHeight : 0);
 
     return Container(
-      height: heightContainerConstraint.isInfinite ? heightContainer : heightContainerConstraint,
+      height: heightContainerConstraint.isInfinite
+          ? heightContainer
+          : heightContainerConstraint,
       padding: widget.paddingNavigation,
       width: widget.navigationWidth,
       color: widget.navigationBackgroundColor,

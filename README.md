@@ -13,13 +13,13 @@ This package provides a way to have a side navbar with some personalisation with
   <tbody>
     <tr>
         <td>
-            <img src="assets/basic_example.gif" alt="Basic usage" />
+            <img src="https://raw.githubusercontent.com/Tri7Ratops/flutter_side_navbar/master/assets/basic_example.gif" alt="Basic usage" />
         </td>
         <td>
-            <img src="assets/reverse_example.gif" alt="Reversed usage" />
+            <img src="https://raw.githubusercontent.com/Tri7Ratops/flutter_side_navbar/master/assets/reverse_example.gif" alt="Reversed usage" />
         </td>
         <td>
-            <img src="assets/shrinkwrap_example.gif" alt="Inside another scroll" />
+            <img src="https://raw.githubusercontent.com/Tri7Ratops/flutter_side_navbar/master/assets/shrinkwrap_example.gif" alt="Inside another scroll" />
         </td>
     </tr>
   </tbody>
@@ -192,21 +192,24 @@ You're now ready to go !
 
 ## Examples
 
-Basic: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic.dart]
+Basic: [example](https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic.dart)
 
-Reversed: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_reversed.dart]
+Reversed: [example](https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_reversed.dart)
 
-Basic with AppBar: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_with_appbar.dart]
+Basic with AppBar: [example](https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/basic_with_appbar.dart)
 
-Inside another scroll widget: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable.dart]
+Inside another scroll widget: [example](https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable.dart)
 
-Inside another scroll widget + AppBar: [https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable_with_appbar.dart]
+Inside another scroll widget + AppBar: [example](https://github.com/Tri7Ratops/flutter_side_navbar/blob/master/example/lib/screens/side_navbar_pages/scrollable_with_appbar.dart)
 
 ## Packages used
 
-`equatable`: [https://pub.dev/packages/equatable]
+`equatable`: [https://pub.dev/packages/equatable](https://pub.dev/packages/equatable)
 
-`scroll_to_index`: [https://pub.dev/packages/scroll_to_index]
+`scroll_to_index`: [https://pub.dev/packages/scroll_to_index](https://pub.dev/packages/scroll_to_index)
 
-`visibility_detector`: [https://pub.dev/packages/visibility_detector]
+`visibility_detector`: [https://pub.dev/packages/visibility_detector](https://pub.dev/packages/visibility_detector)
 
+## FYI
+
+Don't hesitate to report bugs, to ask for more features or participate in the developement :)
